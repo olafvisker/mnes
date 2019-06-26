@@ -27,10 +27,10 @@ struct Velocity : Component {
 **system**
 ```c++
 class MovementSystem : public System {
-    void Init() {
+	void Init() {
 		Require<Position>();
 		Require<Velocity>();
-    }
+	}
 
     void Update() {
 		for (auto e : GetEntities()) {
@@ -56,8 +56,8 @@ system_manager.Init();                      	//initialize all systems
 
 Entity e = entity_manager.Create();         	//create a new entity
 e.AddComponent<Position>(10.0f, 12.0f, 4.0f)	//add a position components
-.AddComponent<Velocity>(1.0f, 0.0f, 0.5f)  		//add a velocity component using chaining
-.Bind();                                   		//bind entity to relevant systems next update
+ .AddComponent<Velocity>(1.0f, 0.0f, 0.5f)		//add a velocity component using chaining
+ .Bind();										//bind entity to relevant systems next update
 
 for (int i = 0; i < 10; i++) {
 	system_manager.Update();					//update all systems
