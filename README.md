@@ -14,33 +14,33 @@ using  namespace  mnes;
 **components**
 ```c++
 struct Position : Component {
-	float x, y, z = 0.0f;
-	Position(float x, float y, float z) : x(x), y(y), z(z) { }
+    float x, y, z = 0.0f;
+    Position(float x, float y, float z) : x(x), y(y), z(z) { }
 };
 
 struct Velocity : Component {
-	float v1, v2, v3 = 0.0f;
-	Velocity(float v1, float v2, float v3) : v1(v1), v2(v2), v3(v3) { }
+    float v1, v2, v3 = 0.0f;
+    Velocity(float v1, float v2, float v3) : v1(v1), v2(v2), v3(v3) { }
 };
 ```
 
 **system**
 ```c++
 class MovementSystem : public System {
-	void Init() {
-		Require<Position>();
-		Require<Velocity>();
-	}
+    void Init() {
+        Require<Position>();
+        Require<Velocity>();
+    }
 
     void Update() {
-		for (auto e : GetEntities()) {
-			Position* pos = e.GetComponent<Position>();
-			Velocity* vel = e.GetComponent<Velocity>();
+        for (auto e : GetEntities()) {
+            Position* pos = e.GetComponent<Position>();
+            Velocity* vel = e.GetComponent<Velocity>();
 
-			pos->x += vel->v1;
-			pos->y += vel->v2;
-			pos->z += vel->v3;
-		}
+            pos->x += vel->v1;
+            pos->y += vel->v2;
+            pos->z += vel->v3;
+        }
     }
 };
 ```
@@ -70,27 +70,27 @@ for (int i = 0; i < 10; i++) {
 Sometimes systems require access to multiple sets of components. In order to solve this problem **mnes** makes use of so called system sets. This allows a single system to work with multiple combinations (entities) of components. You can find an example below.
 ```c++
 class RenderSystem : public System {
-	enum Sets {                                       //define your entity sets
-		CAMERAS,
-		OBJECTS,
-	};
+    enum Sets {                                       //define your entity sets
+        CAMERAS,
+        OBJECTS,
+    };
 
-	void Init() {
-		Require<Viewport>(Sets::CAMERAS);             //define camera entity
-		Require<Camera>(Sets::CAMERAS);
+    void Init() {
+        Require<Viewport>(Sets::CAMERAS);             //define camera entity
+        Require<Camera>(Sets::CAMERAS);
 
-		Require<Transform>(Sets::OBJECTS);            //define object entity
-		Require<MeshRenderer>(Sets::OBJECTS);
-	}
+        Require<Transform>(Sets::OBJECTS);            //define object entity
+        Require<MeshRenderer>(Sets::OBJECTS);
+    }
 
-	void Update() {
-		for (auto c : GetEntities(Sets::CAMERAS)) {     //get all cameras      
-			...  		        
-			for (auto e : GetEntities(Sets::OBJECTS)) { //get all objects
+    void Update() {
+        for (auto c : GetEntities(Sets::CAMERAS)) {     //get all cameras entities
+            ...  		        
+            for (auto e : GetEntities(Sets::OBJECTS)) { //get all objects entities
                 ...
-			}
-		}
-	}
+            }
+        }
+    }
 };
 ```
 **enjoy!**
